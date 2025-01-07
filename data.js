@@ -4,7 +4,7 @@ const movies = [
         description: "Dwie siostry się napierdalają",
         rating: 88,  
         ageRating: "TP",  
-        thumbnail: "https://preview.redd.it/s1-spoilers-mystery-netflix-thumbnails-v0-x3rrb6umgiea1.jpg",
+        thumbnail: "Arcane.jpg",
         videoUrl: "https://www.dailymotion.com/video/x8664de", // Pełny link do osadzenia
         isEmbed: true // Ustaw na true, aby użyć <iframe>
     }
