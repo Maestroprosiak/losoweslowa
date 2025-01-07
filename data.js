@@ -5,7 +5,7 @@ const movies = [
         rating: 88,  
         ageRating: "TP",  
         thumbnail: "Arcane.jpg",
-        videoUrl: "https://www.dailymotion.com/video/x8664de", // Pełny link do osadzenia
+        videoUrl: "https://vider.info/embed/video/ss1nxm", // Pełny link do osadzenia
         isEmbed: true // Ustaw na true, aby użyć <iframe>
     }
 ];
