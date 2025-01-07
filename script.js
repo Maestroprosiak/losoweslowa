@@ -142,8 +142,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isEmbed) {
             const iframe = document.createElement('iframe');
             iframe.src = url;
-            iframe.width = "100%";
-            iframe.height = "100%";
+            iframe.width = "50%";
+            iframe.height = "50%";
             iframe.allow = "autoplay; fullscreen";
             iframe.frameBorder = "0";
             videoPlayerContainer.appendChild(iframe);
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
             video.controls = true;
             video.autoplay = true;
             video.id = 'video-player';
-            video.style.width = "100%";
+            video.style.width = "50%";
             videoPlayerContainer.appendChild(video);
         }
 
