@@ -1,11 +1,12 @@
 const movies = [
     {
-        title: "Lolek",
-        description: "Lolek Odwala",
-        rating: 96,  
-        ageRating: "nah ah",  
-        thumbnail: "Arcane.jpg",  // Image depuis TMDb
-        videoUrl: "https://youtu.be/w5DkmuHelPM"
+        title: "Arcane",
+        description: "Dwie siostry się napierdalają",
+        rating: 88,  
+        ageRating: "TP",  
+        thumbnail: "https://preview.redd.it/s1-spoilers-mystery-netflix-thumbnails-v0-x3rrb6umgiea1.jpg",
+        videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Pełny link do osadzenia
+        isEmbed: true // Ustaw na true, aby użyć <iframe>
     }
 ];
 
@@ -22,31 +23,38 @@ const series = [
                 episodes: [
                     {
                         title: "Odcinek 1",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 2",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 5",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 6",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 7",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     }
                 ]
             },
@@ -55,31 +63,38 @@ const series = [
                 episodes: [
                     {
                         title: "Odcinek 1",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 2",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 5",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 6",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 7",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com"
+                        videoUrl: "https://link-to-video.com",
+                        isEmbed: false // Dodano pole isEmbed
                     }
                 ]
             }
