@@ -15,7 +15,7 @@ const series = [
         description: "Kamilku to dla ciebie UwU",
         rating: 88,
         ageRating: "TV-14",
-        thumbnail: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/exemple.jpg",
+        thumbnail: "Arcane.jpg",
         seasons: [
             {
                 seasonNumber: 1,
