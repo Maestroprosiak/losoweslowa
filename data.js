@@ -199,7 +199,7 @@ const series = [
                     },
                     {
                         title: "Odcinek 5",
-                        videoUrl: "https://mega.nz/embed/cr1BVTwL#zm2sbs25wgv1R3M6Ziwbln5aZVX0u88MjKgHBTqqEu8"",
+                        videoUrl: "https://mega.nz/embed/cr1BVTwL#zm2sbs25wgv1R3M6Ziwbln5aZVX0u88MjKgHBTqqEu8",
                         isEmbed: true // Dodano pole isEmbed
                     },
                     {
