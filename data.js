@@ -112,7 +112,7 @@ const series = [
     },
     {
         title: "Arcane S2",
-        description: "Kamilku to dla ciebie UwU",
+        description: "hehehehe UwU",
         rating: 89,
         ageRating: "TV-14",
         thumbnail: "images/Arcanes2.jpg",
@@ -199,27 +199,12 @@ const series = [
                     },
                     {
                         title: "Odcinek 5",
-                        videoUrl: "https://vider.info/embed/video/ss15vc",
+                        videoUrl: "https://mega.nz/embed/cr1BVTwL#zm2sbs25wgv1R3M6Ziwbln5aZVX0u88MjKgHBTqqEu8"",
                         isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 6",
-                        videoUrl: "https://vider.info/embed/video/ss15vv",
-                        isEmbed: true // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 7",
-                        videoUrl: "https://vider.info/embed/video/ss1cmm",
-                        isEmbed: true // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 8",
-                        videoUrl: "https://vider.info/embed/video/ss1cmn",
-                        isEmbed: true // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 9",
-                        videoUrl: "https://vider.info/embed/video/ss1cxc",
+                        videoUrl: "https://mega.nz/embed/sqcx2SKI#dVlAuknwpJ1Ct05UmiCMI2HK6ZWutk7yYLeDuHX0B5E",
                         isEmbed: true // Dodano pole isEmbed
                     }
                 ]
