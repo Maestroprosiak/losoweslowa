@@ -1,7 +1,7 @@
 const movies = [
     {
-        title: "Exemple 1",
-        description: "Description",
+        title: "Arcane",
+        description: "Specjalnie dla ciebie Kamilku UwU",
         rating: 53,  // Note TMDb
         ageRating: "TP",  // Âge minimum
         thumbnail: "Arcane.jpg",  // Image depuis TMDb
