@@ -149,11 +149,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function playVideo(url, isEmbed) {
         currentVideoUrl = url;
-
-        // Clear previous content
+    
+        // Wyczyść poprzednią zawartość
         videoPlayerContainer.innerHTML = '';
-
+    
+        // Tworzenie przycisku zamykania
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'X';
+        closeButton.classList.add('close-video');
+        closeButton.addEventListener('click', () => {
+            videoPlayerContainer.innerHTML = ''; // Wyczyść odtwarzacz
+            videoPlayerContainer.classList.remove('active'); // Ukryj odtwarzacz
+        });
+    
+        videoPlayerContainer.appendChild(closeButton); // Dodaj przycisk zamykania
+    
         if (isEmbed) {
+            // Tworzenie iframe dla osadzonych wideo
             const iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.width = "50%";
@@ -162,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             iframe.frameBorder = "0";
             videoPlayerContainer.appendChild(iframe);
         } else {
+            // Tworzenie elementu <video>
             const video = document.createElement('video');
             video.src = url;
             video.controls = true;
@@ -170,9 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
             video.style.width = "50%";
             videoPlayerContainer.appendChild(video);
         }
-
+    
+        // Upewnij się, że odtwarzacz jest widoczny
         videoPlayerContainer.classList.add('active');
+    
+        // Opcje wyboru sezonu i odcinka pozostają widoczne
+        serieDetails.classList.remove('hidden');
     }
+    
 
     closeBtn.addEventListener('click', () => {
         videoPlayerContainer.innerHTML = '';  // Clear content
