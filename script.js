@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
         serie.seasons.forEach(season => {
             const option = document.createElement('option');
             option.value = season.seasonNumber;
-            option.textContent = `Saison ${season.seasonNumber}`;
+            option.textContent = `Sezon ${season.seasonNumber}`;
             seasonSelect.appendChild(option);
         });
 
