@@ -4,7 +4,7 @@ const movies = [
         description: "Dwie siostry się napierdalają",
         rating: 88,  
         ageRating: "TP",  
-        thumbnail: "https://preview.redd.it/s1-spoilers-mystery-netflix-thumbnails-v0-x3rrb6umgiea1.jpg?width=356&format=pjpg&auto=webp&s=9a129df360bb733b448539187bb660b2598d17d9",  // Image depuis TMDb
+        thumbnail: "Arcane.jpg",  // Image depuis TMDb
         videoUrl: "https://streamable.com/qc719u"
     }
 ];
