@@ -9,16 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const seasonSelect = document.getElementById('season-select');
     const episodeList = document.getElementById('episode-list');
     const searchInput = document.getElementById('search');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const expandBtn = document.getElementById('expand-button');
-    const pipBtn = document.getElementById('pip-button');
-    const speedBtn = document.getElementById('speed-btn');
-    const backBtn = document.getElementById('back-btn');
-    const forwardBtn = document.getElementById('forward-btn');
-    const downloadBtn = document.getElementById('download-btn');
-    let currentVideoUrl = '';  // Pour stocker l'URL de la vidéo en cours
-    let pipMode = false;       // Indicateur pour le mode PIP
-    let playbackRate = 1;      // Taux de lecture initial
+    let currentVideoUrl = '';  // Stores the current video URL
 
     function loadContent() {
         loadMovies(movies, filmGallery);
@@ -26,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadMovies(content, gallery) {
-        gallery.innerHTML = '';  // Nettoyage
+        gallery.innerHTML = '';  // Clear existing content
         content.forEach(item => {
             const movieContainer = document.createElement('div');
             movieContainer.classList.add('movie-item');
@@ -36,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
             img.alt = item.title;
             img.classList.add('movie-thumbnail');
             img.addEventListener('click', () => {
-                playVideo(item.videoUrl, 'movie');
+                playVideo(item.videoUrl, item.isEmbed);
             });
 
             const movieInfo = document.createElement('div');
@@ -49,10 +40,10 @@ document.addEventListener('DOMContentLoaded', function() {
             description.textContent = item.description;
 
             const rating = document.createElement('p');
-            rating.textContent = `Note : ${item.rating} / 100`;
+            rating.textContent = `Rating: ${item.rating} / 100`;
 
             const ageRating = document.createElement('p');
-            ageRating.textContent = `Âge : ${item.ageRating}`;
+            ageRating.textContent = `Age: ${item.ageRating}`;
 
             movieInfo.appendChild(title);
             movieInfo.appendChild(description);
@@ -67,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function loadSeries(content, gallery) {
-        gallery.innerHTML = '';  // Nettoyage
+        gallery.innerHTML = '';  // Clear existing content
         content.forEach(item => {
             const serieContainer = document.createElement('div');
             serieContainer.classList.add('serie-item');
@@ -90,10 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
             description.textContent = item.description;
 
             const rating = document.createElement('p');
-            rating.textContent = `Note : ${item.rating} / 100`;
+            rating.textContent = `Rating: ${item.rating} / 100`;
 
             const ageRating = document.createElement('p');
-            ageRating.textContent = `Âge : ${item.ageRating}`;
+            ageRating.textContent = `Age: ${item.ageRating}`;
 
             serieInfo.appendChild(title);
             serieInfo.appendChild(description);
@@ -109,13 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showSerieDetails(serie) {
         serieTitle.textContent = serie.title;
-        seasonSelect.innerHTML = '';  // Nettoyage du sélecteur de saison
-        episodeList.innerHTML = '';  // Nettoyage de la liste d'épisodes
+        seasonSelect.innerHTML = '';  // Clear season selector
+        episodeList.innerHTML = '';  // Clear episode list
 
         serie.seasons.forEach(season => {
             const option = document.createElement('option');
             option.value = season.seasonNumber;
-            option.textContent = `Sezon ${season.seasonNumber}`;
+            option.textContent = `Season ${season.seasonNumber}`;
             seasonSelect.appendChild(option);
         });
 
@@ -131,90 +122,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayEpisodes(episodes) {
-        episodeList.innerHTML = '';  // Nettoyage
+        episodeList.innerHTML = '';  // Clear episode list
         episodes.forEach(episode => {
             const li = document.createElement('li');
             li.textContent = episode.title;
             li.addEventListener('click', () => {
-                playVideo(episode.videoUrl, 'serie');
+                playVideo(episode.videoUrl, episode.isEmbed);
             });
             episodeList.appendChild(li);
         });
     }
 
-    function playVideo(url, type) {
+    function playVideo(url, isEmbed) {
         currentVideoUrl = url;
-        videoPlayer.src = url;
-        videoPlayer.play();
-        videoPlayerContainer.classList.add('active');
-        
-        // Masquer ou afficher les détails des séries selon le type
-        if (type === 'movie') {
-            serieDetails.classList.add('hidden');
+
+        // Clear previous content
+        videoPlayerContainer.innerHTML = '';
+
+        if (isEmbed) {
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.width = "100%";
+            iframe.height = "100%";
+            iframe.allow = "autoplay; fullscreen";
+            iframe.frameBorder = "0";
+            videoPlayerContainer.appendChild(iframe);
         } else {
-            serieDetails.classList.remove('hidden');
+            const video = document.createElement('video');
+            video.src = url;
+            video.controls = true;
+            video.autoplay = true;
+            video.id = 'video-player';
+            video.style.width = "100%";
+            videoPlayerContainer.appendChild(video);
         }
+
+        videoPlayerContainer.classList.add('active');
     }
 
     closeBtn.addEventListener('click', () => {
-        videoPlayer.pause();
+        videoPlayerContainer.innerHTML = '';  // Clear content
         videoPlayerContainer.classList.remove('active');
         serieDetails.classList.add('hidden');
-    });
-
-    playPauseBtn.addEventListener('click', () => {
-        if (videoPlayer.paused) {
-            videoPlayer.play();
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            videoPlayer.pause();
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
-    });
-
-    expandBtn.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            videoPlayer.requestFullscreen().catch(err => {
-                alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-            });
-        }
-    });
-    
-
-    pipBtn.addEventListener('click', () => {
-        if (videoPlayer.requestPictureInPicture) {
-            videoPlayer.requestPictureInPicture().catch(err => console.log(err));
-        } else {
-            pipMode = !pipMode;
-            videoPlayer.style.position = pipMode ? 'absolute' : 'relative';
-            videoPlayer.style.width = pipMode ? '300px' : '100%';
-            videoPlayer.style.height = pipMode ? '200px' : 'auto';
-        }
-    });
-
-    speedBtn.addEventListener('click', () => {
-        playbackRate = playbackRate === 1 ? 1.5 : 1; // Alterner entre 1x et 1.5x
-        videoPlayer.playbackRate = playbackRate;
-        speedBtn.innerHTML = playbackRate === 1 ? '<i class="fas fa-tachometer-alt"></i>' : '<i class="fas fa-tachometer-alt" style="color: #ff0;"></i>';
-    });
-
-    backBtn.addEventListener('click', () => {
-        videoPlayer.currentTime -= 10; // Reculer de 10 secondes
-    });
-
-    forwardBtn.addEventListener('click', () => {
-        videoPlayer.currentTime += 10; // Avancer de 10 secondes
-    });
-
-    downloadBtn.addEventListener('click', () => {
-        if (currentVideoUrl) {
-            const link = document.createElement('a');
-            link.href = currentVideoUrl;
-            link.download = 'video.mp4';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
     });
 
     searchInput.addEventListener('input', function() {
