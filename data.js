@@ -1,11 +1,11 @@
 const movies = [
     {
-        title: "Arcane",
-        description: "Dwie siostry się napierdalają",
-        rating: 88,  
-        ageRating: "TP",  
+        title: "Lolek",
+        description: "Lolek Odwala",
+        rating: 96,  
+        ageRating: "nah ah",  
         thumbnail: "Arcane.jpg",  // Image depuis TMDb
-        videoUrl: "https://streamable.com/qc719u"
+        videoUrl: "https://youtu.be/w5DkmuHelPM"
     }
 ];
 
