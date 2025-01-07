@@ -4,7 +4,7 @@ const movies = [
         description: "O kurwa ",
         rating: 100,  
         ageRating: "TP",  
-        thumbnail: "pawel.jpg",
+        thumbnail: "images/pawel.jpg",
         videoUrl: "https://ebd.cda.pl/620x368/389808466", // Pełny link do osadzenia
         isEmbed: true // Ustaw na true, aby użyć <iframe>
     }
@@ -16,7 +16,7 @@ const series = [
         description: "Kamilku to dla ciebie UwU",
         rating: 88,
         ageRating: "TV-14",
-        thumbnail: "Arcane.jpg",
+        thumbnail: "images/Arcane.jpg",
         seasons: [
             {
                 seasonNumber: 1,
@@ -115,7 +115,7 @@ const series = [
         description: "Kamilku to dla ciebie UwU",
         rating: 89,
         ageRating: "TV-14",
-        thumbnail: "Arcanes2.jpg",
+        thumbnail: "images/Arcanes2.jpg",
         seasons: [
             {
                 seasonNumber: 1,
