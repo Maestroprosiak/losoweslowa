@@ -122,15 +122,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayEpisodes(episodes) {
-        episodeList.innerHTML = '';  // Clear episode list
-        episodes.forEach(episode => {
-            const li = document.createElement('li');
-            li.textContent = episode.title;
-            li.addEventListener('click', () => {
-                playVideo(episode.videoUrl, episode.isEmbed);
-            });
-            episodeList.appendChild(li);
+        episodeList.innerHTML = ''; // Wyczyść listę odcinków
+    
+        // Tworzenie rozwijanej listy odcinków
+        const episodeSelect = document.createElement('select');
+        episodeSelect.id = 'episode-select';
+    
+        // Dodawanie opcji do listy
+        episodes.forEach((episode, index) => {
+            const option = document.createElement('option');
+            option.value = episode.videoUrl; // URL jako wartość
+            option.textContent = `Episode ${index + 1}: ${episode.title}`;
+            episodeSelect.appendChild(option);
         });
+    
+        // Obsługa zmiany wyboru w rozwijanej liście
+        episodeSelect.addEventListener('change', function () {
+            const selectedEpisode = episodes.find(episode => episode.videoUrl === this.value);
+            if (selectedEpisode) {
+                playVideo(selectedEpisode.videoUrl, selectedEpisode.isEmbed);
+            }
+        });
+    
+        episodeList.appendChild(episodeSelect); // Dodanie listy rozwijanej do kontenera
     }
 
     function playVideo(url, isEmbed) {
