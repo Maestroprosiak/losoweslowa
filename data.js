@@ -23,38 +23,48 @@ const series = [
                 episodes: [
                     {
                         title: "Odcinek 1",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1nxm",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 2",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1nxn",
+                        isEmbed: true // Dodano pole isEmbed
+                    },
+                    {
+                        title: "Odcinek 3",
+                        videoUrl: "https://vider.info/embed/video/ss1nxx",
+                        isEmbed: true // Dodano pole isEmbed
+                    },
+                    {
+                        title: "Odcinek 4",
+                        videoUrl: "https://vider.info/embed/video/ss15v5",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 5",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss15vc",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 6",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss15vv",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 7",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1cmm",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1cmn",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
-                        title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        title: "Odcinek 9",
+                        videoUrl: "https://vider.info/embed/video/ss1cxc",
+                        isEmbed: true // Dodano pole isEmbed
                     }
                 ]
             },
@@ -63,13 +73,13 @@ const series = [
                 episodes: [
                     {
                         title: "Odcinek 1",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1nxm",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 2",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
+                        videoUrl: "https://vider.info/embed/video/ss1nxn",
+                        isEmbed: true // Dodano pole isEmbed
                     },
                     {
                         title: "Odcinek 5",
