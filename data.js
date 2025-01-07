@@ -4,7 +4,7 @@ const movies = [
         description: "O kurwa ",
         rating: 100,  
         ageRating: "TP",  
-        thumbnail: "Pawel.jpg",
+        thumbnail: "pawel.jpg",
         videoUrl: "https://ebd.cda.pl/620x368/389808466", // Pełny link do osadzenia
         isEmbed: true // Ustaw na true, aby użyć <iframe>
     }
