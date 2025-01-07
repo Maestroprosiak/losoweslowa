@@ -167,11 +167,13 @@ const series = [
                     }
                 ]
             },
-                {
-        title: "薬屋のひとりごと",
-        description: "Zielarka",
+        ]
+    },
+    {
+        title: "Kusuriya no Hitorigoto",
+        description: "Zielarka UwU",
         rating: 95,
-        ageRating: "TV-8",
+        ageRating: "TV-14",
         thumbnail: "images/apothecary.webp",
         seasons: [
             {
@@ -179,7 +181,7 @@ const series = [
                 episodes: [
                     {
                         title: "Odcinek 1",
-                        videoUrl: "https://vk.com/video_embed.php?oid=858592511&id=456293845&hash=d541a3285f07304f",
+                        videoUrl: "https://vk.com/video_embed.php?oid=858592511&id=456293845&hash=d541a3285f07304f.mp4",
                         isEmbed: true // Dodano pole isEmbed
                     },
                     {
@@ -206,51 +208,9 @@ const series = [
                         title: "Odcinek 6",
                         videoUrl: "https://mega.nz/embed/sqcx2SKI#dVlAuknwpJ1Ct05UmiCMI2HK6ZWutk7yYLeDuHX0B5E",
                         isEmbed: true // Dodano pole isEmbed
-                    }
+                    },
                 ]
             },
-            {
-                seasonNumber: 2,
-                episodes: [
-                    {
-                        title: "Odcinek 1",
-                        videoUrl: "https://vider.info/embed/video/ss1nxm",
-                        isEmbed: true // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 2",
-                        videoUrl: "https://vider.info/embed/video/ss1nxn",
-                        isEmbed: true // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 5",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 6",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 7",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
-                    },
-                    {
-                        title: "Odcinek 8",
-                        videoUrl: "https://link-to-video.com",
-                        isEmbed: false // Dodano pole isEmbed
-                    }
-                ]
-            }
-        ]
-    },
         ]
     },
 ];
