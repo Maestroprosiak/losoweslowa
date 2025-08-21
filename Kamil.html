@@ -41,7 +41,8 @@
     .grid{display:grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap:8px}
 
     .palette-list{display:flex; flex-wrap:wrap; gap:10px}
-    .chip{display:flex; align-items:center; gap:8px; background:#0e1419; border:1px solid var(--border); padding:6px; border-radius:12px}
+    .chip{display:flex; align-items:center; gap:6px; background:#0e1419; border:1px solid var(--border); padding:6px; border-radius:12px}
+    .chip label{font-size:12px; color:var(--text)}
     .chip input[type="text"]{width:90px}
     .chip .remove{border:none; background:transparent; color:var(--danger); cursor:pointer; font-size:18px; line-height:1}
 
@@ -151,7 +152,7 @@
     const rgbToHex = ([r,g,b])=> '#' + [r,g,b].map(v=> v.toString(16).padStart(2,'0')).join('');
     const dist2 = (a,b)=>{ let d0=a[0]-b[0], d1=a[1]-b[1], d2=a[2]-b[2]; return d0*d0+d1*d1+d2*d2; };
 
-    // Default palette (from your list)
+    // Default palette
     const DEFAULT_PALETTE_HEX = [
       '#000000','#3c3c3c','#787878','#d2d2d2','#ffffff','#600018','#ed1c24','#ff7f27','#f6aa09','#f9dd3b',
       '#fffabc','#0eb968','#13e67b','#0c816e','#13e1be','#28509e','#4093e4','#60f7f2','#6b50f6','#99b1fb',
@@ -177,17 +178,16 @@
     const paletteFromImageBtn = document.getElementById('paletteFromImage');
     const paletteSizeInput = document.getElementById('paletteSize');
 
-    let originalImage = null; // HTMLImageElement
+    let originalImage = null;
     let aspect = 1;
     let palette = DEFAULT_PALETTE_HEX.map(hexToRgb);
+    let paletteEnabled = [];
 
-    // Canvas helpers
     const inCtx = inputCanvas.getContext('2d');
     const outCtx = outputCanvas.getContext('2d');
 
-    function fitCanvasToImage(canvas, img){
-      // Keep square visual but correct internal ratio for crispness
-      const maxSide = 512; // visual size; CSS scales to 100%
+    function drawImageOnCanvas(canvas, img){
+      const maxSide = 512;
       const ratio = img.width / img.height;
       let w = maxSide, h = maxSide;
       if (ratio>1){ h = Math.round(maxSide/ratio); } else { w = Math.round(maxSide*ratio); }
@@ -198,15 +198,21 @@
       ctx.drawImage(img,0,0,w,h);
     }
 
-    function drawImageOnCanvas(canvas, img){
-      fitCanvasToImage(canvas, img);
-    }
-
     function renderPaletteUI(){
       paletteList.innerHTML = '';
+      paletteEnabled = paletteEnabled.slice(0,palette.length).concat(Array(palette.length).fill(true));
       palette.forEach((rgb, idx)=>{
         const wrap = document.createElement('div');
         wrap.className = 'chip';
+
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.checked = paletteEnabled[idx] ?? true;
+        check.addEventListener('change', ()=>{ paletteEnabled[idx] = check.checked; });
+
+        const lbl = document.createElement('label');
+        lbl.textContent = idx;
+
         const color = document.createElement('input');
         color.type = 'color';
         color.value = rgbToHex(rgb);
@@ -215,199 +221,112 @@
         const hexInp = document.createElement('input');
         hexInp.type = 'text';
         hexInp.value = rgbToHex(rgb);
-        hexInp.addEventListener('change', ()=>{
-          try{ palette[idx] = hexToRgb(hexInp.value); color.value = rgbToHex(palette[idx]); }
-          catch(e){ /*ignore*/ }
-        });
+        hexInp.addEventListener('change', ()=>{ try{ palette[idx] = hexToRgb(hexInp.value); color.value = rgbToHex(palette[idx]); }catch(e){} });
 
         const del = document.createElement('button');
         del.className = 'remove';
-        del.title = 'Usuń kolor';
         del.textContent = '✕';
-        del.addEventListener('click', ()=>{ palette.splice(idx,1); renderPaletteUI(); });
+        del.addEventListener('click', ()=>{ palette.splice(idx,1); paletteEnabled.splice(idx,1); renderPaletteUI(); });
 
-        wrap.appendChild(color); wrap.appendChild(hexInp); wrap.appendChild(del);
+        wrap.appendChild(check);
+        wrap.appendChild(lbl);
+        wrap.appendChild(color);
+        wrap.appendChild(hexInp);
+        wrap.appendChild(del);
         paletteList.appendChild(wrap);
       });
     }
 
     function setDefaultPalette(){
       palette = DEFAULT_PALETTE_HEX.map(hexToRgb);
+      paletteEnabled = palette.map(()=>true);
       renderPaletteUI();
     }
 
-    // Nearest color mapping
     function nearestColor(rgb){
       let bestI = 0, bestD = Infinity;
       for (let i=0;i<palette.length;i++){
         const d = dist2(rgb, palette[i]);
         if (d < bestD){ bestD = d; bestI = i; }
       }
-      return palette[bestI];
+      return bestI;
     }
 
-    // Downscale to target (pixel grid), map to palette, then display upscaled
     function convertToPixelArt(){
       if (!originalImage) return;
       const targetW = Math.max(1, parseInt(wInput.value||'32'));
       const targetH = Math.max(1, parseInt(hInput.value||'32'));
 
-      // Draw small (target) on an offscreen canvas
       const small = document.createElement('canvas');
       small.width = targetW; small.height = targetH;
       const sctx = small.getContext('2d');
       sctx.imageSmoothingEnabled = false;
 
-      // Draw original into small keeping aspect by cover/contain logic
-      // We'll fit by contain to avoid cropping
       const iw = originalImage.width, ih = originalImage.height;
       const ir = iw/ih, tr = targetW/targetH;
       let dw, dh, dx, dy;
-      if (ir > tr){ // image is wider -> fit width
-        dw = targetW; dh = Math.round(targetW/ir); dx = 0; dy = Math.floor((targetH - dh)/2);
-      } else {
-        dh = targetH; dw = Math.round(targetH*ir); dy = 0; dx = Math.floor((targetW - dw)/2);
-      }
+      if (ir > tr){ dw = targetW; dh = Math.round(targetW/ir); dx = 0; dy = Math.floor((targetH - dh)/2); }
+      else { dh = targetH; dw = Math.round(targetH*ir); dy = 0; dx = Math.floor((targetW - dw)/2); }
       sctx.fillStyle = 'black'; sctx.fillRect(0,0,targetW,targetH);
       sctx.drawImage(originalImage, dx, dy, dw, dh);
 
       const imgData = sctx.getImageData(0,0,targetW,targetH);
       const d = imgData.data;
+      const pixelIndices = [];
       for (let i=0;i<d.length;i+=4){
-        const mapped = nearestColor([d[i], d[i+1], d[i+2]]);
-        d[i]=mapped[0]; d[i+1]=mapped[1]; d[i+2]=mapped[2]; d[i+3]=255;
+        const idx = nearestColor([d[i], d[i+1], d[i+2]]);
+        const rgb = palette[idx];
+        d[i]=rgb[0]; d[i+1]=rgb[1]; d[i+2]=rgb[2]; d[i+3]=255;
+        pixelIndices.push(idx);
       }
       sctx.putImageData(imgData,0,0);
 
-      // Draw enlarged on output canvas
       const scale = Math.max(1, parseInt(exportScaleInput.value||'20'));
       outputCanvas.width = targetW*scale; outputCanvas.height = targetH*scale;
       outCtx.imageSmoothingEnabled = false;
       outCtx.clearRect(0,0,outputCanvas.width, outputCanvas.height);
-      outCtx.drawImage(small, 0,0, outputCanvas.width, outputCanvas.height);
-    }
 
-    // Simple K-Means to extract palette
-    function kmeansPalette(n=12){
-      n = clamp(n, 2, 64);
-      // Sample down original image to avoid huge arrays
-      const samp = document.createElement('canvas');
-      const maxS = 160; // speed
-      const ir = originalImage.width / originalImage.height;
-      let sw = maxS, sh = maxS;
-      if (ir>1) sh = Math.round(maxS/ir); else sw = Math.round(maxS*ir);
-      samp.width = sw; samp.height = sh;
-      const sctx = samp.getContext('2d');
-      sctx.imageSmoothingEnabled = true;
-      sctx.drawImage(originalImage, 0,0, sw, sh);
-      const {data} = sctx.getImageData(0,0,sw,sh);
-
-      // Build points (skip transparent, though typical images are opaque)
-      const pts = [];
-      for (let i=0;i<data.length;i+=4){
-        const a = data[i+3]; if (a<8) continue;
-        pts.push([data[i], data[i+1], data[i+2]]);
-      }
-      if (pts.length===0) return;
-
-      // Initialize centers by random samples
-      const centers = [];
-      const used = new Set();
-      while (centers.length<n){
-        const idx = Math.floor(Math.random()*pts.length);
-        if (used.has(idx)) continue; used.add(idx);
-        centers.push(pts[idx].slice());
-      }
-
-      const iters = 12;
-      for (let it=0; it<iters; it++){
-        const clusters = Array.from({length:n}, ()=>({sum:[0,0,0], count:0}));
-        for (let p of pts){
-          let bi=0, bd=Infinity; for (let i=0;i<n;i++){ const d=dist2(p, centers[i]); if (d<bd){bd=d; bi=i;} }
-          clusters[bi].sum[0]+=p[0]; clusters[bi].sum[1]+=p[1]; clusters[bi].sum[2]+=p[2]; clusters[bi].count++;
-        }
-        for (let i=0;i<n;i++){
-          if (clusters[i].count>0){
-            centers[i][0] = Math.round(clusters[i].sum[0]/clusters[i].count);
-            centers[i][1] = Math.round(clusters[i].sum[1]/clusters[i].count);
-            centers[i][2] = Math.round(clusters[i].sum[2]/clusters[i].count);
+      let k=0;
+      for (let y=0;y<targetH;y++){
+        for (let x=0;x<targetW;x++,k++){
+          const idx = pixelIndices[k];
+          if (paletteEnabled[idx] || paletteEnabled.every(v=>!v)){
+            const [r,g,b] = palette[idx];
+            outCtx.fillStyle = `rgb(${r},${g},${b})`;
+            outCtx.fillRect(x*scale,y*scale,scale,scale);
+            outCtx.fillStyle = (r+g+b)/3>128 ? "black" : "white";
+            outCtx.font = `${scale*0.6}px monospace`;
+            outCtx.textAlign="center";
+            outCtx.textBaseline="middle";
+            outCtx.fillText(idx, x*scale+scale/2, y*scale+scale/2);
           } else {
-            // re-seed empty cluster
-            const idx = Math.floor(Math.random()*pts.length);
-            centers[i] = pts[idx].slice();
+            outCtx.fillStyle = "#111";
+            outCtx.fillRect(x*scale,y*scale,scale,scale);
           }
         }
       }
-      // Sort by luminance for nicer order
-      centers.sort((a,b)=> (0.2126*a[0]+0.7152*a[1]+0.0722*a[2]) - (0.2126*b[0]+0.7152*b[1]+0.0722*b[2]) );
-      palette = centers;
-      renderPaletteUI();
     }
 
-    // Events
-    fileInput.addEventListener('change', (e)=>{
-      const f = e.target.files?.[0]; if (!f) return;
-      const url = URL.createObjectURL(f);
-      const img = new Image();
-      img.onload = ()=>{
-        originalImage = img; aspect = img.width / img.height;
-        drawImageOnCanvas(inputCanvas, img);
-        if (lockAspect.checked){
-          const w = parseInt(wInput.value||'32');
-          hInput.value = Math.max(1, Math.round(w / aspect));
-        }
-        URL.revokeObjectURL(url);
-      };
-      img.src = url;
-    });
 
-    // Drag & drop
-    document.addEventListener('dragover', e=>{ e.preventDefault(); });
-    document.addEventListener('drop', e=>{
-      e.preventDefault();
-      const f = e.dataTransfer.files?.[0]; if (!f) return;
-      fileInput.files = e.dataTransfer.files; // for UX
-      const url = URL.createObjectURL(f);
-      const img = new Image();
-      img.onload = ()=>{ originalImage = img; aspect = img.width/img.height; drawImageOnCanvas(inputCanvas, img); URL.revokeObjectURL(url); };
-      img.src = url;
-    });
-
-    // Aspect lock behaviour
-    wInput.addEventListener('input', ()=>{
-      if (lockAspect.checked && aspect>0){ hInput.value = Math.max(1, Math.round(parseInt(wInput.value||'1')/aspect)); }
-    });
-    hInput.addEventListener('input', ()=>{
-      if (lockAspect.checked && aspect>0){ wInput.value = Math.max(1, Math.round(parseInt(hInput.value||'1')*aspect)); }
-    });
-
-    convertBtn.addEventListener('click', convertToPixelArt);
-
-    downloadBtn.addEventListener('click', ()=>{
-      if (!originalImage) return;
-      // Ensure latest conversion is drawn
-      convertToPixelArt();
-      const link = document.createElement('a');
-      link.download = 'pixel-art.png';
-      link.href = outputCanvas.toDataURL('image/png');
-      link.click();
-    });
-
-    resetBtn.addEventListener('click', ()=>{
-      originalImage = null; inputCanvas.width = inputCanvas.height = 256; inCtx.clearRect(0,0,256,256);
-      outputCanvas.width = outputCanvas.height = 256; outCtx.clearRect(0,0,256,256);
-      wInput.value = 32; hInput.value = 32; exportScaleInput.value = 20; aspect=1; setDefaultPalette();
-    });
-
-    addColorBtn.addEventListener('click', ()=>{ palette.push([255,255,255]); renderPaletteUI(); });
-    clearPaletteBtn.addEventListener('click', ()=>{ palette = []; renderPaletteUI(); });
-    loadDefaultPaletteBtn.addEventListener('click', setDefaultPalette);
-
-    paletteFromImageBtn.addEventListener('click', ()=>{
-      if (!originalImage) return;
-      const n = parseInt(paletteSizeInput.value||'12');
-      kmeansPalette(n);
-    });
+// Events
+fileInput.addEventListener('change',e=>{
+  const f=e.target.files?.[0];if(!f)return;
+  const url=URL.createObjectURL(f);
+  const img=new Image();
+  img.onload=()=>{originalImage=img;aspect=img.width/img.height;
+    inCtx.clearRect(0,0,inputCanvas.width,inputCanvas.height);
+    inCtx.drawImage(img,0,0,inputCanvas.width,inputCanvas.height);
+    if(lockAspect.checked){hInput.value=Math.round(parseInt(wInput.value)/aspect);}
+    URL.revokeObjectURL(url);
+  };
+  img.src=url;
+});
+convertBtn.addEventListener('click',convertToPixelArt);
+downloadBtn.addEventListener('click',()=>{const link=document.createElement('a');link.download='pixel-art.png';link.href=outputCanvas.toDataURL();link.click();});
+resetBtn.addEventListener('click',()=>{originalImage=null;inCtx.clearRect(0,0,inputCanvas.width,inputCanvas.height);outCtx.clearRect(0,0,outputCanvas.width,outputCanvas.height);wInput.value=32;hInput.value=32;exportScaleInput.value=20;setDefaultPalette();});
+addColorBtn.addEventListener('click',()=>{palette.push([255,255,255]);visibleColors.push(true);renderPaletteUI();});
+clearPaletteBtn.addEventListener('click',()=>{palette=[];visibleColors=[];renderPaletteUI();});
+loadDefaultPaletteBtn.addEventListener('click',setDefaultPalette);
 
     // Init
     (function init(){
